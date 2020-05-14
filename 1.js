@@ -8,11 +8,13 @@ const pipeline = promisify(stream.pipeline);
 const readStream = fs.createReadStream(__filename);
 const writeStream = fs.createWriteStream(`${__filename}-output`);
 
-const writeMyselfToFile = async () => {
-    await pipeline(
+const writeMyselfToFile = () => {
+    pipeline(
         readStream, 
         writeStream
     );
 };
 
 writeMyselfToFile();
+
+// Read Stream (file in disk) --> Write Stream (file 2.js-output in disk)

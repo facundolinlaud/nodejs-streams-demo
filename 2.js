@@ -8,9 +8,9 @@ const pipeline = promisify(stream.pipeline);
 const readStream = fs.createReadStream('NONEXISTENT-FILE.TXT'); // <----- This file does not exist!!!
 const writeStream = fs.createWriteStream(`${__filename}-output`);
 
-const writeMyselfToFile = async () => {
+const writeMyselfToFile = () => {
     try {
-        await pipeline(
+        pipeline(
             readStream, 
             writeStream
         );      
@@ -20,3 +20,5 @@ const writeMyselfToFile = async () => {
 };
 
 writeMyselfToFile();
+
+// Read Stream (file in disk) --> Write Stream (file 2.js-output in disk)

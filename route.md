@@ -57,7 +57,7 @@ const testTransformStream = (transform) => {
    2. `push(): boolean` **// backpressuring**
       1. Retorna un boolean indicando si el consumidor puede seguir consumiendo (highWaterMark)
       2. Si retorna `true`, seguir pusheando
-      3. Si retorna `false`, retomar en `on('drain')`
+      3. Si retorna `false`, hacer back off (se retoma cuando la write stream invoca `drain`)
       4. **Cada stream tiene un buffer**
    3. `read(bytes)` standalone
    4. `pause()` y `resume()` que funcionan sobre `_read()`

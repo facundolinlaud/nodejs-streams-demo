@@ -8,11 +8,11 @@ const pipeline = promisify(stream.pipeline);
 const readStream = fs.createReadStream(__filename);
 const writeStream = fs.createWriteStream(`${__filename}-output`);
 
-const writeMyselfToFile = async () => {
+const writeMyselfToFile = () => {
     try {
         const capitalizeStream = new CapitalizeStream();
 
-        await pipeline(
+        pipeline(
             readStream,
             capitalizeStream,
             writeStream
@@ -31,3 +31,5 @@ class CapitalizeStream extends stream.Transform {
 };
 
 writeMyselfToFile();
+
+// Read Stream (file in disk) --> Transform Stream (capitalizer) ---> Write Stream (file 3.js-output in disk)
