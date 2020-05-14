@@ -49,26 +49,26 @@ const testTransformStream = (transform) => {
    1. `pipeline`
    2. `on.('error')`
    3. `try catch`
-
-2. Custom **Transformable**: capitalizar letras
+2. Throw
+3. Custom **Transformable**: capitalizar letras
    1. No acumular datos (memory spikes)
-
-3. Custom **Readable**: letras de una string
+4. Custom **Readable**: letras de una string
    1. `_read(bytes)`
    2. `push(): boolean` **// backpressuring**
       1. Retorna un boolean indicando si el consumidor puede seguir consumiendo (highWaterMark)
       2. Si retorna `true`, seguir pusheando
       3. Si retorna `false`, retomar en `on('drain')`
+      4. **Cada stream tiene un buffer**
    3. `read(bytes)` standalone
    4. `pause()` y `resume()` que funcionan sobre `_read()`
-4. Custom **Writable**: console log
+5. Custom **Writable**: console log
    1. `_write()` vs `write()`
    2. `drain()` que se propaga al source
    3. `write()` standalone
-5. Custom **Transformable**: objetizar el coso que llega
+6. Custom **Transformable**: objetizar el coso que llega
    1. Object mode vs non-object mode
    2. Cómo especificar un custom `highWaterMark` (object mode vs non-object mode)
-6. Extras
+7. Extras
    1. Testing: `stream-mock` que te permite stubbear y mockear streams
    2. Promises y event emitter
    3. Funciones generadoras como streams (adri)
