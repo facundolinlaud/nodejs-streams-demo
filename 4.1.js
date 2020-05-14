@@ -41,19 +41,19 @@ class AlphabetStream extends stream.Readable {
 
             const character = this.alphabet.charAt(this.i);
             isConsumerStillHungry = this.push(character);
-            console.log(`[     read] pushing  ${character}`);
+            console.log(`[read stream] pushing  ${character}`);
             
             this.i += 1;
         } while(isConsumerStillHungry);
 
-        console.log(`[     read] pausing`);
+        console.log(`[read stream] pausing`);
     };
 };
 
 class CapitalizeStream extends stream.Transform {
     _transform(chunk, _encoding, done) {
         const stringifiedChunk = chunk.toString();
-        console.log(`[transform] received ${stringifiedChunk}`);
+        console.log(`[transform stream] read ${stringifiedChunk}`);
 
         this.push(stringifiedChunk.toUpperCase());
         done();

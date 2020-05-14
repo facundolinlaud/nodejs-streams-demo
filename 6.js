@@ -25,8 +25,13 @@ const writeMyselfToFile = async () => {
 };
 
 class CustomStdoutStream extends stream.Writable {
+    constructor(){
+        super({ objectMode: true });                // now that the transform stream will write this stream in object mode, we need to
+                                                    // toggle object mode here
+    }
+
     _write(chunk, _encoding, done){
-        const stringifiedChunk = chunk.toString();
+        const stringifiedChunk = JSON.stringify(chunk);     // because chunk is now an object
         console.log(`[write stream] ${stringifiedChunk}`);
         done();
     };
@@ -61,11 +66,23 @@ class AlphabetStream extends stream.Readable {
 };
 
 class CapitalizeStream extends stream.Transform {
+    constructor(){
+        super({
+            writableObjectMode: false,      // we are still being written in bytes
+            readableObjectMode: true        // but instead of being read in bytes, we are read in objects.
+                                            // (readable high water marks are now counted on number of objects instead of bytes)
+        })
+    }
+
     _transform(chunk, _encoding, done) {
         const stringifiedChunk = chunk.toString();
-        console.log(`[transform stream] read ${stringifiedChunk}`);
+        const object = {                                            // we create the object to be written
+            [stringifiedChunk]: stringifiedChunk.toUpperCase()      // now if we read "abc", we will write {"abc": "ABC"}
+        };
 
-        this.push(stringifiedChunk.toUpperCase());
+        console.log(`[transform stream] read ${stringifiedChunk}, writing ${JSON.stringify(object)}`);
+
+        this.push(object);
         done();
     };
 };

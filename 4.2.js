@@ -1,35 +1,26 @@
 'use strict';
 
-
+const fs = require('fs');
 const stream = require('stream');
 const { promisify } = require('util');
 const pipeline = promisify(stream.pipeline);
 
 
-
+const writeStream = fs.createWriteStream(`${__filename}-output`);
 
 const writeMyselfToFile = async () => {
     try {
         const alphabetStream = new AlphabetStream();
         const capitalizeStream = new CapitalizeStream();
-        const customStdoutStream = new CustomStdoutStream();
 
         await pipeline(
             alphabetStream,
             capitalizeStream,
-            customStdoutStream
+            writeStream
         );      
     } catch ({ message }) {
         console.log(message);
     }
-};
-
-class CustomStdoutStream extends stream.Writable {
-    _write(chunk, _encoding, done){
-        const stringifiedChunk = chunk.toString();
-        console.log(`[write stream] ${stringifiedChunk}`);
-        done();
-    };
 };
 
 class AlphabetStream extends stream.Readable {
